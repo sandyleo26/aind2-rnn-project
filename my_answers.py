@@ -3,6 +3,7 @@ import numpy as np
 from keras.models import Sequential
 from keras.layers import Dense
 from keras.layers import LSTM
+from keras.layers import Activation
 import keras
 
 
@@ -40,7 +41,9 @@ def build_part1_RNN(window_size):
 def cleaned_text(text):
     punctuation = ['!', ',', '.', ':', ';', '?']
     atypical = ['\"', '$', '%', '&', '\'', '(', ')', '*', '-', '/', '@']
-    for c in atypical:
+    digits = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+    accent = ['à', 'â', 'è', 'é']
+    for c in atypical + digits + accent:
         text = text.replace(c, ' ')
 
     return text
@@ -67,5 +70,5 @@ def build_part2_RNN(window_size, num_chars):
     model = Sequential()
     model.add(LSTM(200, input_shape=(window_size, num_chars)))
     model.add(Dense(num_chars))
-    model.add(Dense(num_chars, activation='softmax'))
+    model.add(Activation('softmax'))
     return model
